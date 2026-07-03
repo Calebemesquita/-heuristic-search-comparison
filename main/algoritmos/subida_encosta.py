@@ -2,7 +2,7 @@
 import random
 from typing import List, Optional, Tuple
 
-from main.algoritmos.best_first_search import HeuristicaFn, Ponto, RetornoBusca
+from main.algoritmos.best_first_search import FuncHeristic, Ponto, SearchReturn
 from main.mapa import vizinhos
 
 
@@ -14,7 +14,7 @@ variação: subida de encosta First Choice
 Intera nos vizinhos na ordem N-L-S-O
 No primeiro vizinho que Heuristica H(atual) > Hvizinho) ele se move para o vizinho
 """
-def subidaEncostaFirstChoice( mapa, origem: Ponto,  destino: Ponto, heuristica_fn: HeuristicaFn,) -> RetornoBusca:
+def subidaEncostaFirstChoice( mapa, origem: Ponto,  destino: Ponto, heuristica_fn: FuncHeristic,) -> SearchReturn:
     n = len(mapa)
     current_possition: Ponto = origem
     current_heuristic: float = heuristica_fn(origem, destino)
@@ -59,7 +59,7 @@ Seleciona o vizinho dos aredores com a menor heuristica H(vizinho) < H(atual)
 Se não houver vizinho melhor ele desiste
 <Alpinista na Neblina> kkk
 """
-def subidaEncostaMaiorAclive( mapa, origem: Ponto, destino: Ponto, heuristica_fn: HeuristicaFn, ) -> RetornoBusca:
+def subidaEncostaMaiorAclive( mapa, origem: Ponto, destino: Ponto, heuristica_fn: FuncHeristic, ) -> SearchReturn:
     n = len(mapa)
     current_possition: Ponto = origem
     current_heuristic: float = heuristica_fn(origem, destino)
@@ -104,7 +104,7 @@ Seleciona o vizinho dos aredores com a menor heuristica H(vizinho) < H(atual)
 Porem, se houver mais de um vizinho melhor, ele escolhe aleatoriamente entre eles
 e se não houver vizinho melhor ele desiste
 """
-def subidaEncostaEstocastica(mapa, origem: Ponto, destino: Ponto, heuristica_fn: HeuristicaFn, rng: random.Random,) -> RetornoBusca:
+def subidaEncostaEstocastica(mapa, origem: Ponto, destino: Ponto, heuristica_fn: FuncHeristic, rng: random.Random,) -> SearchReturn:
     n = len(mapa)
     current_possition: Ponto = origem
     current_heuristic: float = heuristica_fn(origem, destino)

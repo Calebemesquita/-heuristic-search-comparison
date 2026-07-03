@@ -7,57 +7,50 @@ from main.mapa import vizinhos
 from main.no import No
 
 Ponto = Tuple[int, int]
-
-HeuristicaFn = Callable[[Ponto, Ponto], float]
-
-CalcFFn = Callable[[float, float], float]
-
-RetornoBusca = Tuple[Optional[List[Ponto]], Optional[int], int, int]
+FuncHeristic = Callable[[Ponto, Ponto], float]
+FuncTotalCost = Callable[[float, float], float]
+SearchReturn = Tuple[Optional[List[Ponto]], Optional[int], int, int]
 
 
-def busca_best_first(
-    mapa,
-    origem: Ponto,
-    destino: Ponto,
-    heuristica_fn: HeuristicaFn,
-    calc_f_fn: CalcFFn,
-) -> RetornoBusca:
-
+def busca_best_first(mapa, origem: Ponto, destino: Ponto, heuristica_fn: FuncHeristic, calc_f_fn: FuncTotalCost,) -> SearchReturn:
     n = len(mapa)
-    borda: List[No] = []
-    visitados: Set[Ponto] = set()
+    bord: List[No] = []
+    visited: Set[Ponto] = set()
     estados_gerados = 0
-    estados_visitados = 0
+    states_visited = 0
 
-    h_ini = heuristica_fn(origem, destino)
-    f_ini = calc_f_fn(0, h_ini)
-    no_inicial = No(f=f_ini, g=0, h=h_ini, pos=origem, pai=None)
+    init_heuristic = heuristica_fn(origem, destino)
+    final_heuristic = calc_f_fn(0, init_heuristic)
+    node_init = No(f=final_heuristic, g=0, h=init_heuristic, pos=origem, pai=None)
 
-    heapq.heappush(borda, no_inicial)
+    heapq.heappush(bord, node_init)
     estados_gerados += 1
 
-    while borda:
-        atual = heapq.heappop(borda)
+    while bord:
+        current_node = heapq.heappop(bord)
 
-        if atual.pos in visitados:
+        if current_node.pos in visited:
             continue
 
-        visitados.add(atual.pos)
-        estados_visitados += 1
+        visited.add(current_node.pos)
+        states_visited += 1
 
-        if atual.pos == destino:
-            caminho = reconstruir_caminho(atual)
-            return caminho, int(atual.g), estados_gerados, estados_visitados
+        if current_node.pos == destino:
+            current_path = reconstruir_caminho(current_node)
+            return current_path, int(current_node.g), estados_gerados, states_visited
 
-        for v in vizinhos(atual.pos, mapa, n):
-            if v not in visitados:
-                custo_aresta = mapa[v[0]][v[1]]
-                novo_g = atual.g + custo_aresta
-                novo_h = heuristica_fn(v, destino)
-                novo_f = calc_f_fn(novo_g, novo_h)
+        for neighbor_cord in vizinhos(current_node.pos, mapa, n):
+            if neighbor_cord not in visited:
+                
+                custo_passo_terreno = mapa[neighbor_cord[0]][neighbor_cord[1]]
+                
+                total_cost = current_node.g + custo_passo_terreno
+                estimated_distance = heuristica_fn(neighbor_cord, destino)
+                absolute_priority = calc_f_fn(total_cost, estimated_distance)
 
-                novo_no = No(f=novo_f, g=novo_g, h=novo_h, pos=v, pai=atual)
-                heapq.heappush(borda, novo_no)
+                new_neighbor_node = No( f=absolute_priority,  g=total_cost,  h=estimated_distance,  pos=neighbor_cord,  pai=current_node)
+                
+                heapq.heappush(bord, new_neighbor_node)
                 estados_gerados += 1
 
-    return None, None, estados_gerados, estados_visitados
+    return None, None, estados_gerados, states_visited

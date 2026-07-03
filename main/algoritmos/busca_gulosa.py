@@ -1,8 +1,8 @@
 
 from main.algoritmos.best_first_search import (
-    HeuristicaFn,
+    FuncHeristic,
     Ponto,
-    RetornoBusca,
+    SearchReturn,
     busca_best_first,
 )
 
@@ -11,8 +11,8 @@ def busca_gulosa(
     mapa,
     origem: Ponto,
     destino: Ponto,
-    heuristica_fn: HeuristicaFn,
-) -> RetornoBusca:
+    heuristica_fn: FuncHeristic,
+) -> SearchReturn:
 
 
     return busca_best_first(

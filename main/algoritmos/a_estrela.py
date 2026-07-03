@@ -6,9 +6,9 @@ Este módulo agora é apenas um wrapper fino sobre o motor genérico em
 característica do A* (custo acumulado + heurística).
 """
 from main.algoritmos.best_first_search import (
-    HeuristicaFn,
+    FuncHeristic,
     Ponto,
-    RetornoBusca,
+    SearchReturn,
     busca_best_first,
 )
 
@@ -17,8 +17,8 @@ def a_estrela(
     mapa,
     origem: Ponto,
     destino: Ponto,
-    heuristica_fn: HeuristicaFn,
-) -> RetornoBusca:
+    heuristica_fn: FuncHeristic,
+) -> SearchReturn:
     """
     Executa A* sobre o mapa, do ponto de origem ao destino.
 
