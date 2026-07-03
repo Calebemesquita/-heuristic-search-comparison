@@ -5,7 +5,7 @@ import random
 from main.heuristicas import distanciaManhattan
 from main.algoritmos.a_estrela import a_estrela
 from main.algoritmos.busca_gulosa import busca_gulosa
-from main.algoritmos.subida_encosta import subidaEncostaMaiorAclive, sde_gulosa_estocastica
+from main.algoritmos.subida_encosta import subidaEncostaMaiorAclive, subidaEncostaEstocastica
 
 class TestAlgoritmosBusca(unittest.TestCase):
 
@@ -49,7 +49,7 @@ class TestAlgoritmosBusca(unittest.TestCase):
 
     def test_subida_encosta_estocastica(self):
         rng = random.Random(42) 
-        caminho, custo, gerados, visitados = sde_gulosa_estocastica(
+        caminho, custo, gerados, visitados = subidaEncostaEstocastica(
             self.mapa_limpo, self.origem, self.destino, distanciaManhattan, rng
         )
         self.assertIsNotNone(caminho, "SDE Estocástica deve resolver um mapa limpo")
