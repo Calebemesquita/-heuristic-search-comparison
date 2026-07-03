@@ -6,7 +6,7 @@ from main.algoritmos.best_first_search import HeuristicaFn, Ponto, RetornoBusca
 from main.mapa import vizinhos
 
 """
-# algoritmo de <Subida de Encosta>
+# algoritmo de <Subida de Encosta> ou deterministica
 variação: subida de encosta First Choice
 Intera nos vizinhos na ordem N-L-S-O
 No primeiro vizinho que Heuristica H(atual) > Hvizinho) ele se move para o vizinho
@@ -43,15 +43,15 @@ def subidaEncostaFirstChoice( mapa, origem: Ponto,  destino: Ponto, heuristica_f
 
     return current_path, int(custo_acumulado), estados_gerados, estados_visitados
 
-
-def sde_maior_aclive(
-    mapa,
-    origem: Ponto,
-    destino: Ponto,
-    heuristica_fn: HeuristicaFn,
-) -> RetornoBusca:
-
-
+"""
+# Algoritmo de <Subida de Encosta>
+variação: subida de encosta Maior Aclive
+Intera nos vizinhos na ordem N-L-S-O
+Seleciona o vizinho com a menor heuristica H(vizinho) < H(atual)
+Se não houver vizinho melhor ele desiste
+<Alpinista na Neblina> kkk
+"""
+def subidaEncostaMaiorAclive( mapa, origem: Ponto, destino: Ponto, heuristica_fn: HeuristicaFn, ) -> RetornoBusca:
     n = len(mapa)
     current_possition: Ponto = origem
     current_heuristic: float = heuristica_fn(origem, destino)
@@ -69,11 +69,12 @@ def sde_maior_aclive(
 
         for v in vizinhos(current_possition, mapa, n):
             estados_gerados += 1
-            v_h = heuristica_fn(v, destino)
+            heuristic_next_vertice = heuristica_fn(v, destino)
 
-            if v_h < best_heuristic:
-                best_heuristic = v_h
+            if heuristic_next_vertice < best_heuristic:
+                best_heuristic = heuristic_next_vertice
                 best_vertice = v
+
 
         if best_vertice is None:
             return None, None, estados_gerados, estados_visitados
@@ -84,6 +85,8 @@ def sde_maior_aclive(
         current_path.append(best_vertice)
 
     return current_path, int(custo_acumulado), estados_gerados, estados_visitados
+
+
 
 
 def sde_gulosa_estocastica(
