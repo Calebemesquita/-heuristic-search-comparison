@@ -12,7 +12,7 @@ FuncTotalCost = Callable[[float, float], float]
 SearchReturn = Tuple[Optional[List[Ponto]], Optional[int], int, int]
 
 
-def busca_best_first(mapa, origem: Ponto, destino: Ponto, heuristica_fn: FuncHeristic, calc_f_fn: FuncTotalCost,) -> SearchReturn:
+def BFS(mapa, origem: Ponto, destino: Ponto, heuristica_fn: FuncHeristic, calc_f_fn: FuncTotalCost,) -> SearchReturn:
     n = len(mapa)
     bord: List[No] = []
     visited: Set[Ponto] = set()

@@ -2,7 +2,7 @@
 import random
 from typing import List, Optional, Tuple
 
-from main.algoritmos.best_first_search import FuncHeristic, Ponto, SearchReturn
+from main.algoritmos.bfs import FuncHeristic, Ponto, SearchReturn
 from main.mapa import vizinhos
 
 
