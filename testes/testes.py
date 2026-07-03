@@ -2,10 +2,10 @@ import unittest
 import numpy as np
 import random
 
-from main.heuristicas import dist_manhattan
+from main.heuristicas import distanciaManhattan
 from main.algoritmos.a_estrela import a_estrela
 from main.algoritmos.busca_gulosa import busca_gulosa
-from main.algoritmos.subida_encosta import sde_maior_aclive, sde_gulosa_estocastica
+from main.algoritmos.subida_encosta import subidaEncostaMaiorAclive, sde_gulosa_estocastica
 
 class TestAlgoritmosBusca(unittest.TestCase):
 
@@ -25,7 +25,7 @@ class TestAlgoritmosBusca(unittest.TestCase):
 
     def test_a_estrela_mapa_limpo(self):
         caminho, custo, gerados, visitados = a_estrela(
-            self.mapa_limpo, self.origem, self.destino, dist_manhattan
+            self.mapa_limpo, self.origem, self.destino, distanciaManhattan
         )
         self.assertIsNotNone(caminho, "A* deve encontrar um caminho em mapa limpo")
         
@@ -33,8 +33,8 @@ class TestAlgoritmosBusca(unittest.TestCase):
         self.assertEqual(caminho[-1], self.destino, "O último nó do caminho deve ser o destino")
 
     def test_subida_encosta_otimo_local(self):
-        caminho, custo, gerados, visitados = sde_maior_aclive(
-            self.mapa_armadilha, self.origem, self.destino, dist_manhattan
+        caminho, custo, gerados, visitados = subidaEncostaMaiorAclive(
+            self.mapa_armadilha, self.origem, self.destino, distanciaManhattan
         )
         self.assertIsNone(caminho, "Subida de Encosta deve falhar (retornar None) ao cair num ótimo local")
         self.assertIsNone(custo)
@@ -42,7 +42,7 @@ class TestAlgoritmosBusca(unittest.TestCase):
 
     def test_a_estrela_supera_armadilha(self):
         caminho, custo, gerados, visitados = a_estrela(
-            self.mapa_armadilha, self.origem, self.destino, dist_manhattan
+            self.mapa_armadilha, self.origem, self.destino, distanciaManhattan
         )
         self.assertIsNotNone(caminho, "A* não pode ficar preso em ótimo local")
         self.assertEqual(caminho[-1], self.destino)
@@ -50,7 +50,7 @@ class TestAlgoritmosBusca(unittest.TestCase):
     def test_subida_encosta_estocastica(self):
         rng = random.Random(42) 
         caminho, custo, gerados, visitados = sde_gulosa_estocastica(
-            self.mapa_limpo, self.origem, self.destino, dist_manhattan, rng
+            self.mapa_limpo, self.origem, self.destino, distanciaManhattan, rng
         )
         self.assertIsNotNone(caminho, "SDE Estocástica deve resolver um mapa limpo")
         self.assertEqual(caminho[-1], self.destino)
